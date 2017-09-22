@@ -10,7 +10,7 @@ Usage:  mmd.py -h | --help
 
 
     -h --help                Show this screen
-    -v --version             Show the version information
+    --version                Show the version information
     --domain <domain-name>   The domain from where you want to download; valid parameters are: MangaHere, KissManga, MangaPanda.
     --url <url>              URL must be from the provided domain and must be the summary page of the desired manga
     -o                       Overwrite existing files
@@ -22,22 +22,44 @@ Usage:  mmd.py -h | --help
 
 """
 
-from logging import WARNING, ERROR, INFO, DEBUG, info, basicConfig as log_config, getLogger
+
+from logging import WARNING, ERROR, INFO, DEBUG, info, basicConfig as log_config, getLogger as get_logger
+from configparser import ConfigParser
 import os
 from signal import signal, SIGINT
 from docopt import docopt
-from MMD import __version__
 
 
+from MMD import __version__, CONFIG_PATH, LOG_PATH
+from MMD.utils import ColorizeFilter
+from MMD.Domain import domain, MangaHere
 
-log_config(level=INFO, format='%(message)s')
-getLogger('requests').setLevel(WARNING)
-log = getLogger(__name__)
+# Supported Domains
+DOMAINS = {'MangaHere': MangaHere.Downloader}
+
+# SetUp the logger
+log_config(level=INFO, format='%(message)s', filename=LOG_PATH)
+get_logger('requests').setLevel(WARNING)
+log = get_logger(__name__)
 log.setLevel(INFO)
-log.addFilter(utils.ColorizeFilter())
+log.addFilter(ColorizeFilter())
 
+# SetUp the ConfigParser
+config = ConfigParser()
+config.read(CONFIG_PATH)
 
-arguments = None
+# Argument ID's
+DOMAIN_ID = '--domain'
+URL_ID = '--url'
+PATH_ID = '--'
+THREADING_ID = '--threading'
+DEBUG_ID = '--debug'
+ERROR_ID = '--error'
+
+arguments = dict()
+domain = domain.Downloader()
+path = config.get('MMD', 'path')
+url = str()
 
 
 def main():
@@ -46,8 +68,29 @@ def main():
 
     # Parse Arguments
     arguments = docopt(__doc__, version=__version__)
+
+    if arguments[DEBUG_ID]:
+        log.level = DEBUG
+    elif arguments[ERROR_ID]:
+        log.level = ERROR
+
+    log.info('Manga Downloader')
+    log.debug(arguments)
+
+    setup_parameters()
+
     pass
 
+
+def setup_parameters():
+    global domain, path
+    if arguments[DOMAIN_ID] not in DOMAINS:
+        log.debug('Unsupported Domain: {0}'.format(arguments[DOMAIN_ID]))
+        quit()
+    domain = DOMAINS[arguments[DOMAIN_ID]]()
+    if PATH_ID in arguments:
+        path = arguments[PATH_ID]
+    pass
 
 if __name__ == '__main__':
     main()
