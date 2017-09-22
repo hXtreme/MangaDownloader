@@ -1,5 +1,6 @@
 # MangaDownloader
-A command line utility to download manga and meta-data from web-sites.
+Download Complete Manga with a single line!
+This is a command line utility to download manga and meta-data from supported websites web-sites.
 
 
 ## System requirements
@@ -20,9 +21,18 @@ python3 setup.py install
    -v -version              Show the version information
    -domain [domain-name]    The domain from where you want to download; valid parameters are: MangaHere, KissManga, MangaPanda.
    -url [url]               URL must be from the provided domain and must be the summary page of the desired manga
-   -mode [ o | s ]          Overwrite \ Skip existing files
+   -mode [ o | s ]          Overwrite\Skip existing files
    -threading               Download via multiple threads (Shows promise of performance boost)
+   --error                  Set logging priority to error
+   --debug                  Set logging priority to debug
 ```
+
+##README
+Latest README file available at
+```
+https://github.com/hXtreme/MangaDownloader
+```
+
 ## License
 
 [GPL v2](https://www.gnu.org/licenses/gpl-2.0.txt), original author [hXtreme](https://github.com/hXtreme)
