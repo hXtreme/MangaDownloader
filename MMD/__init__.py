@@ -6,18 +6,25 @@ from os import path, environ, makedirs
 
 __version__ = 'v0.0.1'
 
-config_dir = path.join(path.expanduser('~'), '.config/MMD')
+
+def createfile(file_path, data):
+    if not path.exists(file_path):
+        with open(file_path, 'w') as config_file:
+            config_file.write(data)
+
+config_dir = path.join(path.expanduser('~'), '.config\MMD')
 if 'XDG_CONFIG_HOME' in environ:
     config_dir = environ['XDG_CONFIG_HOME']
-
-config_file_path = path.join(config_dir, 'MMD.cfg')
-text = """[MMD]
-path = .
-"""
 
 if not path.exists(config_dir):
     makedirs(config_dir)
 
-if not path.exists(config_file_path):
-    with open(config_file_path, 'w') as config_file:
-        config_file.write(text)
+# LOG_PATH = 'MMD.log'
+LOG_PATH = path.join(config_dir, 'MMD.log')
+CONFIG_PATH = path.join(config_dir, 'MMD.cfg')
+text = """[MMD]
+path = .
+"""
+
+createfile(CONFIG_PATH, text)
+createfile(LOG_PATH, '')
