@@ -27,8 +27,8 @@ python3 setup.py install
    --debug                  Set logging priority to debug
 ```
 
-##README
-Latest README file available at
+## README
+The latest README file is available at:
 ```
 https://github.com/hXtreme/MangaDownloader
 ```
