@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'docopt',
         'requests',
+        'clint',
     ],
     url='https://github.com/hXtreme/MangaDownloader',
     classifiers=[
@@ -33,6 +34,7 @@ setup(
             'MMD = MMD.mmd:main',
             'MyMangaDownloader = MMD.mmd:main',
             'MangaDownloader = MMD.mmd:main',
+            'mmd = MMD.mmd:main',
         ],
     },
 )

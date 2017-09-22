@@ -12,7 +12,6 @@ if 'XDG_CONFIG_HOME' in environ:
 
 config_file_path = path.join(config_dir, 'MMD.cfg')
 text = """[MMD]
-auth_token =
 path = .
 """
 
@@ -20,5 +19,5 @@ if not path.exists(config_dir):
     makedirs(config_dir)
 
 if not path.exists(config_file_path):
-    with open(config_file_path, 'w') as f:
-        f.write(text)
+    with open(config_file_path, 'w') as config_file:
+        config_file.write(text)
