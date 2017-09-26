@@ -19,7 +19,7 @@ python3 setup.py install
 ```
     mmd.py -h | --help
     mmd.py -v | --version
-    mmd.py (--domain <domain-name>) (--url <url>) [-s | -o] [--threading] [--debug | --error]
+    mmd.py (--domain <domain-name>) (--url <url>) [-s | -o] [--threading] [--debug | --error] [--path]
 ```
 
 ### Options:
