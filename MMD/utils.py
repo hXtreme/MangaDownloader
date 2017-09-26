@@ -8,7 +8,7 @@ https://github.com/davidfischer-ch/pytoolbox/blob/master/pytoolbox/logging.py
 import logging
 import re
 from termcolor import colored
-from os import path
+from os import path, mkdir
 
 __all__ = ('ColorizeFilter', )
 
@@ -29,7 +29,15 @@ class ColorizeFilter(logging.Filter):
         return True
 
 
-def createfile(file_path, data):
+def create_file(file_path, data):
     if not path.exists(file_path):
         with open(file_path, 'w') as config_file:
             config_file.write(data)
+
+
+def create_dir(location: str):
+    directory = path.dirname(location)
+    if directory > '' and not path.exists(directory):
+        mkdir(directory)
+    if location is not None and location > '' and not path.exists(location):
+        mkdir(location)
