@@ -3,7 +3,7 @@
 """Python Manga Downloader (MyMangaDownloader)."""
 
 from os import path, environ, makedirs
-from MMD.utils import createfile
+from MMD.utils import create_file
 
 __version__ = 'v0.0.1'
 
@@ -23,5 +23,5 @@ path = {0}
 
 """.format(path.join(path.expanduser('~'), 'MMD\Library'))
 
-createfile(CONFIG_PATH, text)
-createfile(LOG_PATH, '')
+create_file(CONFIG_PATH, text)
+create_file(LOG_PATH, '')
