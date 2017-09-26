@@ -6,7 +6,7 @@
 Usage:  mmd.py -h | --help
         mmd.py -v | --version
         mmd.py (--domain <domain-name>) (--url <url>) [-s | -o]\
-         [--threading] [--debug | --error]
+         [--threading] [--debug | --error] [--path]
 
 
     -h --help                Show this screen
@@ -23,7 +23,7 @@ Usage:  mmd.py -h | --help
 """
 
 
-from logging import WARNING, ERROR, INFO, DEBUG, info, basicConfig as log_config, getLogger as get_logger
+from logging import WARNING, ERROR, INFO, DEBUG, basicConfig as log_config, getLogger as get_logger
 from configparser import ConfigParser
 import os
 from signal import signal, SIGINT
@@ -51,19 +51,19 @@ config.read(CONFIG_PATH)
 # Argument ID's
 DOMAIN_ID = '--domain'
 URL_ID = '--url'
-PATH_ID = '--'
+PATH_ID = '--path'
 THREADING_ID = '--threading'
 DEBUG_ID = '--debug'
 ERROR_ID = '--error'
 
 arguments = dict()
-domain = domain.Downloader()
+downloader = domain.Downloader
 path = config.get('MMD', 'path')
 url = str()
 
 
 def main():
-    # SetUp to use global variables
+    # Set-Up to use global variables
     global arguments
 
     # Parse Arguments
@@ -79,15 +79,23 @@ def main():
 
     setup_parameters()
 
+    downloader.download(url=arguments[URL_ID],
+                        threading=arguments[THREADING_ID],
+                        log=log,
+                        path=path)
+
+
     pass
 
 
 def setup_parameters():
-    global domain, path
+    # Set-Up to use global variables
+    global downloader, path
+
     if arguments[DOMAIN_ID] not in DOMAINS:
         log.debug('Unsupported Domain: {0}'.format(arguments[DOMAIN_ID]))
         quit()
-    domain = DOMAINS[arguments[DOMAIN_ID]]()
+    downloader = DOMAINS[arguments[DOMAIN_ID]]
     if PATH_ID in arguments:
         path = arguments[PATH_ID]
     pass
