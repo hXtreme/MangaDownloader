@@ -46,16 +46,15 @@ class Downloader(domain.Downloader):
         title = soup.find(name='h1',
                           attrs={'class': 'title'}).span.next_sibling
         title = title.title()
-        log.info('Manga Title: {0}'.format(title))
+        log.debug('Manga Title: {0}'.format(title))
 
         # Now looking for Cover Image
         log.debug('Now we are looking for the manga cover image.')
         cover = soup.find(name='div',
                           attrs={'class': 'manga_detail_top clearfix'}).img.get(r'src')
-        log.info('Successfully found the Cover Image')
+        log.debug('Successfully found the Cover Image')
 
-        # Now find Author and Summary
-
+        # Now looking Author and Summary
         info_tag = soup.find(name='ul',
                              attrs={'class': 'detail_topText'})
         log.debug('Now looking for Author')
@@ -63,12 +62,13 @@ class Downloader(domain.Downloader):
             if 'Author(s):' in str(tag):
                 author = tag.a.string
                 break
-        log.info('Author: {0}'.format(author))
+        log.debug('Author: {0}'.format(author))
 
         log.debug('Now looking for Summary Text')
         summary = str(info_tag.find(name='p',
                                     attrs={r'id': r'show'}))[35:-88]
-        log.info('Summary text is found')
-        log.debug('Summary: {0}'.format(summary))
+        log.debug('Summary (at most first 1000 chars): {0}'.format(summary[:min(1000, len(summary))]))
+
+        log.info('Successfully Gathered all the meta-data for {0}'.format(title))
         return title, cover, author, summary
     pass
