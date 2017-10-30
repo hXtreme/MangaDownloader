@@ -69,6 +69,7 @@ def main():
     # Parse Arguments
     arguments = docopt(__doc__, version=__version__)
 
+    # Set-Up logging
     if arguments[DEBUG_ID]:
         log.level = DEBUG
     elif arguments[ERROR_ID]:
@@ -77,8 +78,10 @@ def main():
     log.info('Manga Downloader')
     log.debug(arguments)
 
+    # Set-Up all parameters
     setup_parameters()
 
+    # Download the Manga
     downloader.download(url=arguments[URL_ID],
                         threading=arguments[THREADING_ID],
                         log=log,
