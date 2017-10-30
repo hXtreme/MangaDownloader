@@ -11,8 +11,8 @@ This is a command line utility to download manga and meta-data from supported we
 
 ### Installation
 ```
-git clone https://github.com/hXtreme/MangaDownloader.git && cd scdl
-python3 setup.py install
+git clone https://github.com/hXtreme/MangaDownloader.git
+python setup.py install
 ```
 
 ### Usage:
