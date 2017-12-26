@@ -17,6 +17,7 @@ setup(
         'docopt',
         'requests',
         'clint',
+        'termcolor',
     ],
     url='https://github.com/hXtreme/MangaDownloader',
     classifiers=[
