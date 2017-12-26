@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 
 """
-Copied from
-https://github.com/davidfischer-ch/pytoolbox/blob/master/pytoolbox/logging.py
+Partly copied from:
+    https://github.com/davidfischer-ch/pytoolbox/blob/master/pytoolbox/logging.py
 """
 
 import logging

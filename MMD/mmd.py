@@ -29,10 +29,10 @@ import os
 from signal import signal, SIGINT
 from docopt import docopt
 
-
 from MMD import __version__, CONFIG_PATH, LOG_PATH
 from MMD.utils import ColorizeFilter
 from MMD.Domain import domain, MangaHere
+from MMD.strings import *
 
 # Supported Domains
 DOMAINS = {'MangaHere': MangaHere.Downloader}
@@ -75,7 +75,7 @@ def main():
     elif arguments[ERROR_ID]:
         log.level = ERROR
 
-    log.info('Manga Downloader')
+    log.info(APP_NAME)
     log.debug(arguments)
 
     # Set-Up all parameters
@@ -86,8 +86,6 @@ def main():
                         threading=arguments[THREADING_ID],
                         log=log,
                         path=path)
-
-
     pass
 
 
@@ -96,7 +94,7 @@ def setup_parameters():
     global downloader, path
 
     if arguments[DOMAIN_ID] not in DOMAINS:
-        log.debug('Unsupported Domain: {0}'.format(arguments[DOMAIN_ID]))
+        log.debug(UNSUPPORTED_DOMAIN_MESSAGE.format(arguments[DOMAIN_ID]))
         quit()
     downloader = DOMAINS[arguments[DOMAIN_ID]]
     if PATH_ID in arguments:
