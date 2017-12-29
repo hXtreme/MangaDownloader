@@ -27,7 +27,7 @@ METADATA_MESSAGE = 'Title: {0}\nAuthor: {1}\nSummary: {2}'
 
 DOWNLOAD_COMPLETE_MESSAGE = 'The Manga should be downloaded!!'
 
-THREAD_FAILURE_MESSAGE = 'Thread Id:{0} >> Failed to Download {1}'
+THREAD_DOWNLOAD_FAILURE_MESSAGE = 'Thread Id:{0} >> Failed to Download {1}'
 METADATA_FILE_CONTENT = '# {0}\n' \
                         '## Chapter No. : {1}\n' \
                         '## Total Pages : {2}\n' \
