@@ -36,8 +36,9 @@ def create_file(file_path, data):
 
 
 def create_dir(location: str):
+    assert location is not None
     directory = path.dirname(location)
     if directory > '' and not path.exists(directory):
-        mkdir(directory)
-    if location is not None and location > '' and not path.exists(location):
+        create_dir(directory)
+    if location > '' and not path.exists(location):
         mkdir(location)

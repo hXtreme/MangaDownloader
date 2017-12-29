@@ -25,12 +25,19 @@ METADATA_SEARCH_SUCCESS_SUMMARY = 'Summary (at most first 1000 chars): {0}'
 METADATA_SUCCESS_MESSAGE = 'Successfully collected the meta-data.'
 METADATA_MESSAGE = 'Title: {0}\nAuthor: {1}\nSummary: {2}'
 
-DOWNLOAD_COMPLETE_MESSAGE = 'The Manga should be downloaded!!'
+DOWNLOAD_STARTED_MESSAGE = 'The Manga should be downloaded!!'
 
 THREAD_FAILURE_MESSAGE = 'Thread Id:{0} >> Failed to Download {1}'
 METADATA_FILE_CONTENT = '# {0}\n' \
-                        '## Chapter No. : {1}\n' \
-                        '## Total Pages : {2}\n' \
+                        '## Details\n' \
+                        '### Chapter No. :\n' \
+                        '```\n' \
+                        '{1}\n' \
+                        '```\n' \
+                        '### Total Pages :\n' \
+                        '```\n' \
+                        '{2}\n' \
+                        '```\n' \
                         '## Pages\n' \
                         '```\n' \
                         '<ADD ALL THE LINKS HERE>\n' \

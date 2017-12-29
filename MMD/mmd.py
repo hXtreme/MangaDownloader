@@ -6,7 +6,7 @@
 Usage:  mmd.py -h | --help
         mmd.py -v | --version
         mmd.py (--domain <domain-name>) (--url <url>) [-s | -o]\
-         [--threading] [--debug | --error] [--path]
+         [--threading] [--debug | --error] [--path <path>]
 
 
     -h --help                Show this screen
@@ -95,9 +95,10 @@ def setup_parameters():
 
     if arguments[DOMAIN_ID] not in DOMAINS:
         log.debug(UNSUPPORTED_DOMAIN_MESSAGE.format(arguments[DOMAIN_ID]))
+        log.debug(EXIT_MESSAGE)
         quit()
     downloader = DOMAINS[arguments[DOMAIN_ID]]
-    if PATH_ID in arguments:
+    if arguments[PATH_ID] is not False:
         path = arguments[PATH_ID]
     pass
 

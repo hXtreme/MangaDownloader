@@ -1,5 +1,5 @@
 from MMD.Domain import domain
-from MMD.utils import create_file
+from MMD.utils import create_file, create_dir
 from MMD.strings import *
 
 import requests
@@ -33,14 +33,19 @@ class Downloader(domain.Downloader):
             pass
 
         def run(self):
-            while True:
+            while self.__chapter_queue.not_empty:
                 url = self.__chapter_queue.get()
                 chapter_number = url[url.rfind('/', 0, len(url)-1) + 1:-1]
                 page = Downloader.ChapterDownloader.last_page(url=url)
                 path = os.path.join(self.__path, chapter_number)
                 meta_data_file = os.path.join(path, 'Downloaded.md')
-                if not os.path.exists(meta_data_file) :
-                    pages = ((url + str(page_num) + '.html', os.path.join(path, '{:03d}.jpg'.format(page_num))) for page_num in range(1, page + 1))
+                create_dir(path)
+                if not os.path.exists(meta_data_file):
+                    pages = [
+                        (url + str(page_num) + '.html',
+                         os.path.join(path, '{:03d}.jpg'.format(page_num)))
+                        for page_num in range(1, page + 1)
+                    ]
                     for page, image_path in pages:
                         retries = 0
                         while not os.path.exists(image_path):
@@ -52,8 +57,9 @@ class Downloader(domain.Downloader):
                                     self.__log.error(THREAD_FAILURE_MESSAGE.format(self.__id, path))
                                     break
                     # TODO: Check for complete download before writing to the meta-data-file.
-                    with open(meta_data_file) as f:
+                    with open(meta_data_file, mode='w') as f:
                         f.write(METADATA_FILE_CONTENT.format(self.__title, chapter_number, len(pages)))
+                self.__chapter_queue.task_done()
 
 
     @staticmethod
@@ -76,8 +82,8 @@ class Downloader(domain.Downloader):
             quit(-1)
 
         title, cover, author, summary = Downloader.get_meta_data(page=page, log=log)
-        log.debug(METADATA_SUCCESS_MESSAGE)
-        log.debug(METADATA_MESSAGE.format(title, author, summary))
+        log.info(METADATA_SUCCESS_MESSAGE)
+        log.info(METADATA_MESSAGE.format(title, author, summary))
 
         chapters = Downloader.get_chapter_url(page=page, log=log)
 
@@ -95,25 +101,25 @@ class Downloader(domain.Downloader):
             chapter_thread.start()
         chapters.join()
 
-        log.debug(DOWNLOAD_STARTED_MESSAGE)
+        log.info(DOWNLOAD_COMPLETE_MESSAGE)
 
     @staticmethod
     def get_chapter_url(page: str, log):
 
-        soup = BeautifulSoup(markup=page, parser=Downloader.PARSER)
+        soup = BeautifulSoup(page, Downloader.PARSER)
 
         chapter_anchors = soup.find(name='div',
                                     attrs={'class': 'detail_list'}).ul.find_all(name='a',
                                                                                 attrs={'class': 'color_0077'})
         chapters = Queue()
         for chapter_anchor in reversed(chapter_anchors):
-            chapters.put(chapter_anchor.get(r'href'))
+            chapters.put('http:' + chapter_anchor.get(r'href'))
         return chapters
 
     @staticmethod
     def get_meta_data(page: str, log):
         # Create the markup file
-        soup = BeautifulSoup(markup=page, parser=Downloader.PARSER)
+        soup = BeautifulSoup(page, Downloader.PARSER)
 
         # Now looking for Title
         log.debug(METADATA_SEARCH_TITLE)
@@ -143,6 +149,6 @@ class Downloader(domain.Downloader):
                                     attrs={r'id': r'show'}))[35:-88]
         log.debug(METADATA_SEARCH_SUCCESS_SUMMARY.format(summary[:min(1000, len(summary))]))
 
-        log.info(METADATA_SUCCESS_MESSAGE)
+        log.debug(METADATA_SUCCESS_MESSAGE)
         return title, cover, author, summary
     pass
