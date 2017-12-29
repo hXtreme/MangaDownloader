@@ -18,6 +18,7 @@ setup(
         'requests',
         'clint',
         'termcolor',
+        'bs4',
     ],
     url='https://github.com/hXtreme/MangaDownloader',
     classifiers=[
