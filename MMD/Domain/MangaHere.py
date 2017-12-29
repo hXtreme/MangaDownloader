@@ -4,6 +4,7 @@ from MMD.strings import *
 
 import requests
 from requests.exceptions import ConnectionError, ConnectTimeout, MissingSchema
+from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from threading import Thread
 from queue import Queue
@@ -25,12 +26,19 @@ class Downloader(domain.Downloader):
         @staticmethod
         def last_page(url:str):
             # TODO: Implement this
+            page = requests.get(url=url).text
+            soup = BeautifulSoup(page, Downloader.PARSER)
             return 0
 
         @staticmethod
         def download_image(url: str, path: str):
-            # TODO: Implement this
-            pass
+            page = requests.get(url=url).text
+            soup = BeautifulSoup(page, Downloader.PARSER)
+            img_url = soup.find(
+                r'section',
+                {r'class': r'read_img', r'id': r'viewer'}
+            ).find(r'img', {r'id': 'image'}).get('src')
+            urlretrieve(img_url, path)
 
         def run(self):
             while self.__chapter_queue.not_empty:
@@ -50,11 +58,11 @@ class Downloader(domain.Downloader):
                         retries = 0
                         while not os.path.exists(image_path):
                             try:
-                                Downloader.ChapterDownloader.download_image(url=page, path=path)
+                                Downloader.ChapterDownloader.download_image(url=page, path=image_path)
                             except TimeoutError:
                                 retries += 1
                                 if retries > Downloader.MAX_RETRY:
-                                    self.__log.error(THREAD_FAILURE_MESSAGE.format(self.__id, path))
+                                    self.__log.error(THREAD_DOWNLOAD_FAILURE_MESSAGE.format(self.__id, image_path))
                                     break
                     # TODO: Check for complete download before writing to the meta-data-file.
                     with open(meta_data_file, mode='w') as f:
