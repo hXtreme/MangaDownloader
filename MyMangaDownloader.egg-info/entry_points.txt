@@ -1,0 +1,6 @@
+[console_scripts]
+MMD = MMD.mmd:main
+MangaDownloader = MMD.mmd:main
+MyMangaDownloader = MMD.mmd:main
+mmd = MMD.mmd:main
+

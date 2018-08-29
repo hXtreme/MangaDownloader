@@ -1,0 +1,11 @@
+[37mManga Downloader[0m
+[33m{'--debug': True,
+ '--domain': 'MangaHere',
+ '--error': False,
+ '--help': False,
+ '--threading': True,
+ '--url': 'irl',
+ '--version': False,
+ '-o': False,
+ '-s': False,
+ '-v': False}[0m
