@@ -5,7 +5,7 @@ This is a command line utility to download manga and meta-data from supported we
 
 ## System requirements
 
-* Python3
+* Python3.7
 
 ## Instructions
 
